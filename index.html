@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>迷宫</title>
+    <style>
+        canvas {
+            border: 1px solid #ccc;
+        }
+    </style>
+</head>
+<body>
+<canvas width="800" height="600"></canvas>
+<script>
+    //获取canvas元素
+    var cs = document.querySelector('canvas');
+    //获取canvas的上下文
+    var ctx = cs.getContext('2d');
+    //调用上下文的api进行图形的绘制
+    var cX = -10;
+    var cY = 60;
+    var row = 0;
+    var col = 2;
+    var speed = 3;
+    var img = new Image();
+    var bg = new Image();
+    bg.src = 'images/bgp2.jpg';
+    img.src = 'images/dmm.png';
+    img.onload = function () {
+        var imgW = img.width / 4;
+        var imgH = img.height / 4;
+        var imgX = row * imgW;
+        var imgY = col * imgH;
+        ctx.drawImage(bg,0,0,800,600);
+        ctx.drawImage(img, imgX, imgY, imgW, imgH, cX, cY, imgW, imgH);
+        window.onkeydown = function (e) {
+            switch (e.keyCode) {
+                case 37:
+                    cX -= speed;
+                    col = 1;
+                    break;
+                case 38:
+                    cY -= speed;
+                    col = 3;
+                    break;
+                case 39:
+                    cX += speed;
+                    col = 2;
+                    break;
+                case 40:
+                    cY += speed;
+                    col = 0;
+                    break;
+            }
+            if (cX >= cs.width - imgW + 10) {
+                cX = cs.width - imgW + 10;
+            }
+            if (cX < -10) {
+                cX = -10;
+            }
+            if (cY > cs.height - imgH + 5) {
+                cY = cs.height - imgH + 5;
+            }
+            if (cY < -5) {
+                cY = -5;
+            }
+            imgX = row * imgW;
+            imgY = col * imgH;
+            ctx.clearRect(0, 0, cs.width, cs.height);
+            ctx.drawImage(bg,0,0,800,600);
+            ctx.drawImage(img, imgX, imgY, imgW, imgH, cX, cY, imgW, imgH);
+            row++;
+            if (row > 3) {
+                row = 0;
+            }
+        }
+    };
+
+
+</script>
+</body>
+</html>
